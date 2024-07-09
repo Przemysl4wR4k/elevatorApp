@@ -4,7 +4,8 @@
             <app-floor [id]="floor" [people]="elevatorSystemService.getWaitingPeople(floor) | async"/>
         </td>
         <td *ngFor="let elevator of elevatorSystemService.elevators$ | async">
-            <app-elevator [id]="elevator" [people]="elevatorSystemService.getCarriedPeople(floor, elevator) | async"/>
+            <app-elevator *ngIf="elevator.currentFloor === floor" [id]="elevator.id" [people]="elevatorSystemService.getCarriedPeople(floor, elevator.id) | async"/>
         </td>
     </tr>
 </table>
+<button class="button" (click)="elevatorSystemService.nextStep()">Next Step</button>

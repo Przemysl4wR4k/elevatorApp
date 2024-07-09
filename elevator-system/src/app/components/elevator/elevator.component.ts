@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Person } from '../../models/elevator-system.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-elevator',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './elevator.component.html',
   styleUrl: './elevator.component.scss'
 })
