@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Person } from '../../models/elevator-system.model';
 
 @Component({
   selector: 'app-elevator',
@@ -8,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './elevator.component.scss'
 })
 export class ElevatorComponent {
-
+  @Input() id!: number
+  @Input() people!: Person[] | null
 }

@@ -1,1 +1,8 @@
-<div>Floor {{id}}</div>Destination floor: <input><button class="button">Call elevator</button>
+<div>Floor {{id}}</div>
+Destination floor: <input [formControl]="destinationFloorControl">
+<button class="button" [disabled]="!destinationFloorControl.valid" (click)="callElevator()">Call elevator</button>
+<div class="d-flex">
+    <div class="person" *ngFor="let person of people"> 
+        {{person.startingFloor}} -> {{person.destinationFloor}}
+    </div>
+</div>
