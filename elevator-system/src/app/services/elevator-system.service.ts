@@ -21,19 +21,22 @@ export class ElevatorSystemService {
     people$ = this.peopleSubject.asObservable();
 
     callElevator(startingFloor: number, destinationFloor: number): void {
+        const currentElevators = this.elevatorsSubject.getValue()
+        let closestElevator = currentElevators.reduce((prev, curr) => 
+            Math.abs(curr.currentFloor - startingFloor) < Math.abs(prev.currentFloor - startingFloor) && curr.status === 'wait' ? curr : prev
+        );
+
+        closestElevator.floorsToStopOn.push(+startingFloor);
+
+        this.elevatorsSubject.next(currentElevators);
         const currentPeople = this.peopleSubject.getValue();
         currentPeople.push({
             startingFloor,
             destinationFloor,
-            elevatorNumber: 0
+            elevatorNumber: 0,
+            waitingForElevatorId: closestElevator.id
         });
         this.peopleSubject.next(currentPeople);
-
-        this.resolveElevatorToCall()
-    }
-
-    private resolveElevatorToCall() {
-
     }
 
     getWaitingPeople(floor: number): Observable<Person[]> {
@@ -50,12 +53,26 @@ export class ElevatorSystemService {
 
     nextStep(): void {
         const currentElevators = this.elevatorsSubject.getValue();
+        const currentPeople = this.peopleSubject.getValue();
 
         currentElevators.forEach(elevator => {
             if(elevator.floorsToStopOn.length === 0) {
                 elevator.status = 'wait'
             }
             else if (elevator.status === 'wait' || elevator.status === 'transfer') {
+                if (elevator.status === 'transfer') {
+                    currentPeople.filter(person => 
+                        person.elevatorNumber !== elevator.id &&
+                        person.destinationFloor !== elevator.currentFloor
+                    )
+                    currentPeople.map(person => {
+                        if(elevator.id === person.waitingForElevatorId) {
+                            person.elevatorNumber = elevator.id
+                            elevator.floorsToStopOn.push(+person.destinationFloor)   
+                        }
+                    })
+                    elevator.floorsToStopOn = elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor)                     
+                }
                 if (elevator.floorsToStopOn.some(floor => floor === elevator.currentFloor)) {
                     elevator.status = 'transfer';
                 }

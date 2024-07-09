@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Person } from '../../models/elevator-system.model';
+import { Elevator, Person } from '../../models/elevator-system.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,6 +10,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './elevator.component.scss'
 })
 export class ElevatorComponent {
-  @Input() id!: number
+  @Input() elevator!: Elevator
   @Input() people!: Person[] | null
 }

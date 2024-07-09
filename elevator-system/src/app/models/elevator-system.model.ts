@@ -2,6 +2,7 @@ export interface Person {
     startingFloor: number,
     destinationFloor: number,
     elevatorNumber: number
+    waitingForElevatorId: number
 }
 
 export interface Elevator {
