@@ -1,8 +1,8 @@
 <table>
-    <tr *ngFor="let floor of floors">
+    <tr *ngFor="let floor of elevatorSystemService.floors$ | async">
         <td>
             <app-floor [id]="floor"></app-floor>
         </td>
-        <td *ngFor="let elevator of elevators">{{elevator}}</td>
+        <td *ngFor="let elevator of elevatorSystemService.elevators$ | async">{{elevator}}</td>
     </tr>
 </table>

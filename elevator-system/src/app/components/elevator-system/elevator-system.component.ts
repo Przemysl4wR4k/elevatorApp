@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FloorComponent } from '../floor/floor.component';
+import { ElevatorSystemService } from '../../services/elevator-system.service';
 
 @Component({
   selector: 'app-elevator-system',
@@ -10,6 +11,8 @@ import { FloorComponent } from '../floor/floor.component';
   styleUrl: './elevator-system.component.scss'
 })
 export class ElevatorSystemComponent {
-  protected floors = Array.from({length:10},(v,k)=>k+1);
-  protected elevators = Array.from({length:4},(v,k)=>k+1)
+
+  constructor(protected elevatorSystemService: ElevatorSystemService) {
+    
+  }
 }
