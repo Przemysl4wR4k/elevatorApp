@@ -11,6 +11,5 @@ import { FloorComponent } from '../floor/floor.component';
 })
 export class ElevatorSystemComponent {
   protected floors = Array.from({length:10},(v,k)=>k+1);
-
-
+  protected elevators = Array.from({length:4},(v,k)=>k+1)
 }
