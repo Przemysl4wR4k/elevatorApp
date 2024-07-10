@@ -53,7 +53,7 @@ export class ElevatorSystemService {
 
     nextStep(): void {
         const currentElevators = this.elevatorsSubject.getValue();
-        const currentPeople = this.peopleSubject.getValue();
+        let currentPeople = this.peopleSubject.getValue();
 
         currentElevators.forEach(elevator => {
             if(elevator.floorsToStopOn.length === 0) {
@@ -61,12 +61,12 @@ export class ElevatorSystemService {
             }
             else if (elevator.status === 'wait' || elevator.status === 'transfer') {
                 if (elevator.status === 'transfer') {
-                    currentPeople.filter(person => 
+                    currentPeople = currentPeople.filter(person => 
                         person.elevatorNumber !== elevator.id &&
                         person.destinationFloor !== elevator.currentFloor
                     )
-                    currentPeople.map(person => {
-                        if(elevator.id === person.waitingForElevatorId) {
+                    currentPeople.forEach(person => {
+                        if(elevator.id === person.waitingForElevatorId && person.startingFloor === elevator.currentFloor) {
                             person.elevatorNumber = elevator.id
                             elevator.floorsToStopOn.push(+person.destinationFloor)   
                         }
@@ -100,7 +100,7 @@ export class ElevatorSystemService {
                 }
             }
         });
-
+        this.peopleSubject.next(currentPeople);
         this.elevatorsSubject.next(currentElevators);
     }
 }

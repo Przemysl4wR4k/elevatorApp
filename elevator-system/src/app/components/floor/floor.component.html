@@ -1,6 +1,6 @@
 <div>Floor {{id}}</div>
 Destination floor: <input [formControl]="destinationFloorControl">
-<button class="button" [disabled]="!destinationFloorControl.valid" (click)="callElevator()">Call elevator</button>
+<button class="button" [disabled]="!destinationFloorControl.valid || destinationFloorControl.value == id" (click)="callElevator()">Call elevator</button>
 <div class="d-flex">
     <div class="person" *ngFor="let person of people"> 
         {{person.startingFloor}} -> {{person.destinationFloor}}
