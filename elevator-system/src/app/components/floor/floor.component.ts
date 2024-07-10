@@ -18,16 +18,15 @@ export class FloorComponent {
   destinationFloorControl = new FormControl<number | null>(null, [
     Validators.required,
     Validators.pattern('^[0-9]*$'),
-    Validators.min(1)
+    Validators.min(0)
   ]);
 
   constructor(protected elevatorSystemService: ElevatorSystemService) {}
 
   callElevator() {
     if (this.destinationFloorControl.valid) {
-      const destinationFloor = this.destinationFloorControl.value;
       //@ts-ignore
-      this.elevatorSystemService.callElevator(this.id, destinationFloor);
+      this.elevatorSystemService.callElevator(this.id, this.destinationFloorControl.value);
       this.destinationFloorControl.reset();
     }
   }

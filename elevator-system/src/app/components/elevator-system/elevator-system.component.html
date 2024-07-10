@@ -1,11 +1,17 @@
 <table>
     <tr *ngFor="let floor of elevatorSystemService.floors$ | async">
-        <td>
+        <td class="control-panel">
             <app-floor [id]="floor" [people]="elevatorSystemService.getWaitingPeople(floor) | async"/>
         </td>
-        <td *ngFor="let elevator of elevatorSystemService.elevators$ | async">
-            <app-elevator *ngIf="elevator.currentFloor === floor" [elevator]="elevator" [people]="elevatorSystemService.getCarriedPeople(floor, elevator.id) | async"/>
+        <td class="elevator" *ngFor="let elevator of elevatorSystemService.elevators$ | async"
+            [ngClass]="
+                (elevator.currentFloor === floor && elevator.status === 'transfer') ? 'open-elevator': 'closed-elevator'
+            ">
+            <div class="display-floor">{{elevator.currentFloor}}</div>
+            <app-elevator *ngIf="elevator.currentFloor === floor"
+                [elevator]="elevator"
+                [people]="elevatorSystemService.getCarriedPeople(floor, elevator.id) | async"/>
         </td>
     </tr>
 </table>
-<button class="button" (click)="elevatorSystemService.nextStep()">Next Step</button>
+<app-system-control-buttons/>

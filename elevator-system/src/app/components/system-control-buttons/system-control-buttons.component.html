@@ -1,0 +1,8 @@
+<div class="button-container">
+    
+    <input id="no-of-floors" [formControl]="noOfFloors" placeholder="Number of floors">
+    <button class="button next me-4" [disabled]="!noOfFloors.valid" (click)="setNoOfFloors()">Set number of floors</button>
+    <input id="no-of-elevators" [formControl]="noOfElevators" placeholder="Number of elevators">
+    <button class="button next me-4" [disabled]="!noOfElevators.valid" (click)="setNoOfElevators()">Set number of elevators</button>
+    <button class="button next" (click)="elevatorSystemService.nextStep()">Next Step</button>
+</div>

@@ -1,8 +1,15 @@
-<div>Floor {{id}}</div>
-Destination floor: <input [formControl]="destinationFloorControl">
-<button class="button" [disabled]="!destinationFloorControl.valid || destinationFloorControl.value == id" (click)="callElevator()">Call elevator</button>
-<div class="d-flex">
-    <div class="person" *ngFor="let person of people"> 
-        {{person.startingFloor}} -> {{person.destinationFloor}}
+<div class="floor-container">
+    <div class="floor-header">Floor {{ id }}</div>
+    <div class="call-elevator">
+      <label for="destination">Destination floor:</label>
+      <input id="destination" [formControl]="destinationFloorControl" placeholder="Enter floor number">
+      <button class="button" [disabled]="!destinationFloorControl.valid || destinationFloorControl.value == id" (click)="callElevator()">Call elevator</button>
     </div>
-</div>
+    <div class="waiting-people">
+      <h4>Waiting People:</h4>
+      <ul>
+        <li *ngFor="let person of people">{{ person.destinationFloor }}</li>
+      </ul>
+    </div>
+  </div>
+  
