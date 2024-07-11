@@ -1,87 +1,50 @@
-$primary-color: #007bff;
+$primary-color: #6558d3;
 $secondary-color: #6c757d;
+$button-hover-color: darken($primary-color, 10%);
 $background-color: #f8f9fa;
-$button-color: #28a745;
-$button-hover-color: darken($button-color, 10%);
 $error-color: #dc3545;
 
-.floor-container {
-  background-color: $background-color;
-  border: 1px solid $secondary-color;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-}
-
-.floor-header {
-  font-size: 24px;
-  font-weight: bold;
-  color: $primary-color;
-  margin-bottom: 15px;
-}
-
-.call-elevator {
-  margin-bottom: 20px;
-
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  input {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid $secondary-color;
-    border-radius: 5px;
-  }
-
-  .button {
-    background-color: $button-color;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: background-color 0.3s;
-
-    &:disabled {
-      background-color: $secondary-color;
-      cursor: not-allowed;
-    }
-
-    &:hover:enabled {
-      background-color: $button-hover-color;
-    }
-  }
-}
-
-.waiting-people {
-  h4 {
-    margin-top: 0;
-    color: $primary-color;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    background-color: white;
-    border: 1px solid $secondary-color;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-  }
+* {
+  font-family: Helvetica, sans-serif !important;
 }
 
 body {
-    background-image: url(./assets/images/control-panel.jpg);
+  background-image: url(./assets/images/control-panel.jpg);
 }
 
+.people {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 0.5rem;
+ 
+  .person {
+    display: inline-block;
+    padding: .5rem 1rem;
+    background-color: #f1eeff;
+    font-weight: 600;
+    color: $primary-color;
+    border-radius: 0.7rem;
+  }  
+}
+
+
+.button {
+  background-color: $primary-color;
+  color: #f1eeff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &:disabled {
+    background-color: $secondary-color;
+    cursor: not-allowed;
+  }
+
+  &:hover:enabled {
+    background-color: $button-hover-color;
+  }
+}

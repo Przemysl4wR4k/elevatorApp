@@ -60,7 +60,7 @@ export class ElevatorSystemService {
 
     getCarriedPeople(floor: number, elevatorId: number): Observable<Person[]> {
         return this.people$.pipe(
-            map(people => people.filter(person => person.startingFloor === floor && person.elevatorNumber === elevatorId))
+            map(people => people.filter(person => person.elevatorNumber === elevatorId))
         );
     }
 
@@ -74,16 +74,18 @@ export class ElevatorSystemService {
             }
             else if (elevator.status === 'wait' || elevator.status === 'transfer') {
                 if (elevator.status === 'transfer') {
+                    
                     currentPeople = currentPeople.filter(person => 
-                        person.elevatorNumber !== elevator.id &&
-                        person.destinationFloor !== elevator.currentFloor
-                    );
+                     !(person.elevatorNumber === elevator.id &&
+                        +person.destinationFloor === elevator.currentFloor));
+                    
                     currentPeople.forEach(person => {
                         if(elevator.id === person.waitingForElevatorId && person.startingFloor === elevator.currentFloor) {
                             person.elevatorNumber = elevator.id;
                             elevator.floorsToStopOn.push(+person.destinationFloor);   
                         }
                     });
+                    console.log(currentPeople);
                     elevator.floorsToStopOn = elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor);                     
                 }
                 if (elevator.floorsToStopOn.some(floor => floor === elevator.currentFloor)) {

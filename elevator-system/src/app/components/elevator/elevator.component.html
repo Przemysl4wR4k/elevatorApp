@@ -1,6 +1,3 @@
-Elevator {{elevator | json}}
-<div class="d-flex">
-    <div class="person" *ngFor="let person of people"> 
-        {{person.startingFloor}} -> {{person.destinationFloor}}
-    </div>
+<div class="people">
+    <div class="person" *ngFor="let person of people">{{ person.startingFloor }} -> {{ person.destinationFloor }}</div>
 </div>

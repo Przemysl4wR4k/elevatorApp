@@ -2,21 +2,13 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    display: flex;
     justify-content: center;
     padding: 10px;
-  
-    .button {
-      background-color: gray;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 24px;
-  
-      &:hover {
-        background-color: black;
-      }
+
+    .button-wrapper {
+      border-radius: 0.7rem;
+      box-shadow: 0 30px 30px -25px #4133b740;
+      background-color: #f8f9fa;  
     }
-  }
+  
+}
