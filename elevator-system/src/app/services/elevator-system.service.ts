@@ -6,9 +6,9 @@ import { Elevator, Person } from '../models/elevator-system.model';
     providedIn: 'root',
 })
 export class ElevatorSystemService {
-    floors$ = new BehaviorSubject<number[]>(Array.from({ length: 10 }, (v, k) => 9 - k));
+    floors$ = new BehaviorSubject<number[]>(Array.from({ length: 10 }, (_, k) => 9 - k));
 
-    private elevatorsSubject = new BehaviorSubject<Elevator[]>(Array.from({ length: 16 }, (v, k) => ({
+    private elevatorsSubject = new BehaviorSubject<Elevator[]>(Array.from({ length: 4 }, (_, k) => ({
         id: k + 1,
         currentFloor: 0,
         floorsToStopOn: [],
@@ -83,20 +83,11 @@ export class ElevatorSystemService {
 
     private calculateTravelTime(elevator: Elevator, startingFloor: number, destinationFloor: number): number {
         let travelTime = 0;
-        if(elevator.status === 'wait' || elevator.status === 'transfer') {
-            travelTime +=1
-        } 
-        if(startingFloor < destinationFloor) {
-            travelTime += Math.abs(startingFloor-elevator.currentFloor)
-            travelTime += destinationFloor - startingFloor
-            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor <= destinationFloor).length
-            travelTime += stopsDuringTravel * 2
-        } else {
-            travelTime += Math.abs(startingFloor-elevator.currentFloor)
-            travelTime += startingFloor - destinationFloor
-            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor >= destinationFloor).length
-            travelTime += stopsDuringTravel * 2
-        }
+        const {status, floorsToStopOn} = elevator
+        if(status === 'wait' || status === 'transfer') travelTime +=1
+        travelTime += Math.abs(startingFloor-elevator.currentFloor) + Math.abs(startingFloor - destinationFloor)
+        const stopsDuringTravel = floorsToStopOn.filter(floor => startingFloor < destinationFloor ? floor <= destinationFloor : floor >= destinationFloor).length
+        travelTime += stopsDuringTravel * 2
 
         return travelTime;
     }
