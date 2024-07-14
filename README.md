@@ -27,7 +27,8 @@ ng test
 This will launch the test runner and run all tests.
 
 
-Opis działania projektu:
+Opis działania projektu
+W projekcie założyłem, że użytkownicy wind od razu podają informację o tym, na jakie piętro jadą. Taki rodzaj wind mam w moim biurze w obecnej pracy, a jako że innymi windami nie za bardzo jeżdżę, to od razu pomysł na implementację poszedł w tę stronę. Wydaje mi się również, że jest to ciekawszy przypadek do analizy.
 
 Zaimplementowane zostały dwa interfejsy:
 
