@@ -10,6 +10,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './elevator.component.scss'
 })
 export class ElevatorComponent {
-  @Input() elevator!: Elevator
   @Input() people!: Person[] | null
 }

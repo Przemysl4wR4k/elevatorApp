@@ -7,9 +7,10 @@
             [ngClass]="
                 (elevator.currentFloor === floor && elevator.status === 'transfer') ? 'open-elevator': 'closed-elevator'
             ">
-            <div class="display-floor">{{elevator.currentFloor}}</div>
+            <div class="display-floor">
+                {{elevator.currentFloor}} {{elevator.status === 'up' ? '&uarr;' : null}} {{elevator.status === 'down' ? '&darr;' : null}}
+            </div>
             <app-elevator *ngIf="elevator.currentFloor === floor"
-                [elevator]="elevator"
                 [people]="elevatorSystemService.getCarriedPeople(floor, elevator.id) | async"/>
         </td>
     </tr>
