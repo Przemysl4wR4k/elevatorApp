@@ -8,7 +8,7 @@ import { Elevator, Person } from '../models/elevator-system.model';
 export class ElevatorSystemService {
     floors$ = new BehaviorSubject<number[]>(Array.from({ length: 10 }, (v, k) => 9 - k));
 
-    private elevatorsSubject = new BehaviorSubject<Elevator[]>(Array.from({ length: 4 }, (v, k) => ({
+    private elevatorsSubject = new BehaviorSubject<Elevator[]>(Array.from({ length: 16 }, (v, k) => ({
         id: k + 1,
         currentFloor: 0,
         floorsToStopOn: [],
@@ -125,12 +125,9 @@ export class ElevatorSystemService {
                     if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
                         elevator.status = 'transfer';
     
-                        // Remove people at current floor with matching destination
                         currentPeople = currentPeople.filter(person =>
                             !(person.elevatorNumber === elevator.id && person.destinationFloor === elevator.currentFloor)
                         );
-    
-                        // Load people at current floor
                         currentPeople.forEach(person => {
                             if (person.waitingForElevatorId === elevator.id && person.startingFloor === elevator.currentFloor) {
                                 person.elevatorNumber = elevator.id;
@@ -159,7 +156,6 @@ export class ElevatorSystemService {
         this.peopleSubject.next(currentPeople);
         this.elevatorsSubject.next(currentElevators);
     
-        // Handle people with waitingForElevatorId === 0
         const peopleToCall = currentPeople.filter(person => person.waitingForElevatorId === 0);
         currentPeople = currentPeople.filter(person => person.waitingForElevatorId !== 0);
     

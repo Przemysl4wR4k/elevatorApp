@@ -43,10 +43,8 @@ describe('ElevatorSystemComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const rows = compiled.querySelectorAll('tr');
 
-    // Check number of floors rendered
     expect(rows.length).toBe(10);
 
-    // Check number of elevator cells per row
     rows.forEach(row => {
       const cells = row.querySelectorAll('td.elevator');
       expect(cells.length).toBe(4);
@@ -57,7 +55,6 @@ describe('ElevatorSystemComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const floorControls = compiled.querySelectorAll('app-floor');
 
-    // Check number of floor controls rendered
     expect(floorControls.length).toBe(10);
   });
 

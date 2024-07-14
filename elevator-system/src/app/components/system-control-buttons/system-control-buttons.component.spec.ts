@@ -12,7 +12,7 @@ describe('SystemControlButtonsComponent', () => {
     const elevatorSystemServiceSpy = jasmine.createSpyObj('ElevatorSystemService', ['setNoOfFloors', 'setNoOfElevators', 'nextStep']);
     
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, SystemControlButtonsComponent],  // Import the standalone component here
+      imports: [ReactiveFormsModule, SystemControlButtonsComponent],
       providers: [
         { provide: ElevatorSystemService, useValue: elevatorSystemServiceSpy }
       ]

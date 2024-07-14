@@ -15,7 +15,7 @@ describe('ElevatorSystemService', () => {
 
   it('should initialize with default values', () => {
     service.elevators$.subscribe(elevators => {
-      expect(elevators.length).toBe(4);
+      expect(elevators.length).toBe(16);
       expect(elevators.every(elevator => elevator.currentFloor === 0)).toBeTruthy();
     });
 
@@ -97,7 +97,7 @@ describe('ElevatorSystemService', () => {
 
       service.elevators$.subscribe(elevators => {
         const elevator = elevators[0];
-        expect(elevator.currentFloor).toBe(1); // Assuming elevator moves one step per nextStep call
+        expect(elevator.currentFloor).toBe(1);
       });
     });
 
@@ -128,7 +128,7 @@ describe('ElevatorSystemService', () => {
 
       service.people$.subscribe(people => {
         const waitingPeople = people.filter(person => person.waitingForElevatorId === 0);
-        expect(waitingPeople.length).toBe(0); // Should be 0 after the next step
+        expect(waitingPeople.length).toBe(0);
       });
     });
   });

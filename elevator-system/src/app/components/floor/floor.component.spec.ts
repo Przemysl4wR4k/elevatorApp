@@ -25,7 +25,6 @@ describe('FloorComponent', () => {
     component = fixture.componentInstance;
     elevatorSystemService = TestBed.inject(ElevatorSystemService) as jasmine.SpyObj<ElevatorSystemService>;
 
-    // Set input properties
     component.id = 1;
     component.people = [];
     fixture.detectChanges();
