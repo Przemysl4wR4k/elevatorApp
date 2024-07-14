@@ -56,7 +56,8 @@ Jeśli nie ma wind spełniających podane kryteria, to człowiek nie zostaje prz
 
 Dla każdej z dostępnych wind obliczamy jej travelTime. Jeśli winda znajduje się już w stanie 'wait' lub 'transfer', to dodajemy +1. Dodajemy +1 za każde piętro pomiędzy obecnym piętrem windy a piętrem początkowym i tak samo za każde piętro pomiędzy destinationFloor i startingFloor. Za każde piętro, na którym winda zatrzyma się w trakcie kursu, dodajemy +2 (zmiana stanów na 'transfer' i ponownie na kierunek jazdy).
 
-Możnaby dodać dodatkowe walidatory, ciekawszy UI i zastanowić się nad dalszą poprawą algorytmu. Jeśli uznalibyście coś takiego za potrzebne, to dajcie znać.
+
+Możnaby dodać dodatkowe walidatory, ciekawszy UI z RWD i zastanowić się nad dalszą poprawą algorytmu. Jeśli uznalibyście coś takiego za potrzebne, to dajcie znać.
 
 
 
