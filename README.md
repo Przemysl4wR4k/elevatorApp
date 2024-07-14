@@ -38,6 +38,7 @@ Person
 - destinationFloor: końcowe piętro
 - elevatorNumber: winda, w której się znajduje (0 dla korytarza)
 - waitingForElevatorId: id windy, na jaką czeka (0 jeśli nie mógł żadnej wezwać)
+
 Elevator
 
 - id: id windy
