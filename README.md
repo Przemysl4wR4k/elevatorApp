@@ -11,7 +11,7 @@ Before you begin, ensure you have met the following requirements:
 Installing
 Clone the repository:
 git clone https://github.com/Przemysl4wR4k/elevatorApp.git
-cd elevatorApp
+cd elevator-system
 
 Install the dependencies:
 npm install
