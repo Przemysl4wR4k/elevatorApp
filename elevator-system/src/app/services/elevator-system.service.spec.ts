@@ -15,7 +15,7 @@ describe('ElevatorSystemService', () => {
 
   it('should initialize with default values', () => {
     service.elevators$.subscribe(elevators => {
-      expect(elevators.length).toBe(16);
+      expect(elevators.length).toBe(4);
       expect(elevators.every(elevator => elevator.currentFloor === 0)).toBeTruthy();
     });
 
