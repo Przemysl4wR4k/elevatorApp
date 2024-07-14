@@ -89,12 +89,12 @@ export class ElevatorSystemService {
         if(startingFloor < destinationFloor) {
             travelTime += Math.abs(startingFloor-elevator.currentFloor)
             travelTime += destinationFloor - startingFloor
-            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor < destinationFloor).length
+            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor <= destinationFloor).length
             travelTime += stopsDuringTravel * 2
         } else {
             travelTime += Math.abs(startingFloor-elevator.currentFloor)
             travelTime += startingFloor - destinationFloor
-            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor > destinationFloor).length
+            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor >= destinationFloor).length
             travelTime += stopsDuringTravel * 2
         }
 
