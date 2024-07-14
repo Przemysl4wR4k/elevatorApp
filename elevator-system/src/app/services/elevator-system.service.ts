@@ -116,60 +116,58 @@ export class ElevatorSystemService {
     nextStep(): void {
         const currentElevators = this.elevatorsSubject.getValue();
         let currentPeople = this.peopleSubject.getValue();
-
+    
         currentElevators.forEach(elevator => {
-            if(elevator.floorsToStopOn.length === 0) {
-                elevator.status = 'wait'
-            }
-            else if (elevator.status === 'wait' || elevator.status === 'transfer') {
-                if (elevator.status === 'transfer') {
-                    
-                    currentPeople = currentPeople.filter(person => 
-                     !(person.elevatorNumber === elevator.id &&
-                        +person.destinationFloor === elevator.currentFloor));
-                    
-                    currentPeople.forEach(person => {
-                        if(elevator.id === person.waitingForElevatorId && person.startingFloor === elevator.currentFloor) {
-                            person.elevatorNumber = elevator.id;
-                            elevator.floorsToStopOn.push(+person.destinationFloor);
-                            elevator.floorsToStopOn = [...new Set(elevator.floorsToStopOn)] 
-                        }
-                    });
-                    elevator.floorsToStopOn = elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor);                     
-                }
-                if (elevator.floorsToStopOn.some(floor => floor === elevator.currentFloor)) {
-                    elevator.status = 'transfer';
-                }
-                else if(elevator.floorsToStopOn.some(floor => floor > elevator.currentFloor)) {
-                     elevator.status = 'up';
-                }
-                else if (elevator.floorsToStopOn.some(floor => floor < elevator.currentFloor)) {
-                    elevator.status = 'down';
-                } else {
-                    elevator.status = 'wait';
-                }
-            }
-            else if(elevator.status === 'down') {
-                if(elevator.floorsToStopOn.includes(elevator.currentFloor)) {
-                    elevator.status = 'transfer';
-                } else {
-                    elevator.currentFloor -= 1;
-                }
-            }
-            else if(elevator.status === 'up') {
-                if(elevator.floorsToStopOn.includes(elevator.currentFloor)) {
-                    elevator.status = 'transfer';
-                } else {
-                    elevator.currentFloor += 1;
+            if (elevator.floorsToStopOn.length === 0) {
+                elevator.status = 'wait';
+            } else {
+                if (elevator.status === 'wait' || elevator.status === 'transfer') {
+                    if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
+                        elevator.status = 'transfer';
+    
+                        // Remove people at current floor with matching destination
+                        currentPeople = currentPeople.filter(person =>
+                            !(person.elevatorNumber === elevator.id && person.destinationFloor === elevator.currentFloor)
+                        );
+    
+                        // Load people at current floor
+                        currentPeople.forEach(person => {
+                            if (person.waitingForElevatorId === elevator.id && person.startingFloor === elevator.currentFloor) {
+                                person.elevatorNumber = elevator.id;
+                                elevator.floorsToStopOn.push(person.destinationFloor);
+                            }
+                        });
+    
+                        elevator.floorsToStopOn = [...new Set(elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor))];
+                    } else {
+                        elevator.status = elevator.floorsToStopOn[0] > elevator.currentFloor ? 'up' : 'down';
+                    }
+                } else if (elevator.status === 'up') {
+                    elevator.currentFloor++;
+                    if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
+                        elevator.status = 'transfer';
+                    }
+                } else if (elevator.status === 'down') {
+                    elevator.currentFloor--;
+                    if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
+                        elevator.status = 'transfer';
+                    }
                 }
             }
         });
-
-        const peopleToRecall = currentPeople.filter(person => !person.waitingForElevatorId)
-        currentPeople = currentPeople.filter(person => person.waitingForElevatorId);
-
+    
         this.peopleSubject.next(currentPeople);
         this.elevatorsSubject.next(currentElevators);
-        peopleToRecall.forEach(person => this.callElevator(person.startingFloor, person.destinationFloor));
-}
+    
+        // Handle people with waitingForElevatorId === 0
+        const peopleToCall = currentPeople.filter(person => person.waitingForElevatorId === 0);
+        currentPeople = currentPeople.filter(person => person.waitingForElevatorId !== 0);
+    
+        this.peopleSubject.next(currentPeople);
+    
+        peopleToCall.forEach(person => this.callElevator(person.startingFloor, person.destinationFloor));
+    }
+    
+    
+    
 }
