@@ -34,16 +34,17 @@ Zaimplementowane zostały dwa interfejsy:
 
 Person
 
-startingFloor: początkowe piętro
-destinationFloor: końcowe piętro
-elevatorNumber: winda, w której się znajduje (0 dla korytarza)
-waitingForElevatorId: id windy, na jaką czeka (0 jeśli nie mógł żadnej wezwać)
+- startingFloor: początkowe piętro
+- destinationFloor: końcowe piętro
+- elevatorNumber: winda, w której się znajduje (0 dla korytarza)
+- waitingForElevatorId: id windy, na jaką czeka (0 jeśli nie mógł żadnej wezwać)
 Elevator
 
-id: id windy
-currentFloor: obecne piętro
-floorsToStopOn: lista pięter, na których winda ma się zatrzymać
-status: stan windy ('up' | 'down' | 'transfer' | 'wait')
+- id: id windy
+- currentFloor: obecne piętro
+- floorsToStopOn: lista pięter, na których winda ma się zatrzymać
+- status: stan windy ('up' | 'down' | 'transfer' | 'wait')
+
 Windy posiadają cztery stany: 'up', 'down', 'wait', 'transfer'. Stan 'transfer' służy do przemieszczenia ludzi pomiędzy piętrem a windą. Jeśli winda odbierze osobę, to jej piętro docelowe dodawane jest do tablicy floorsToStopOn. Winda przechodzi w stan 'wait', jeśli jej własność floorsToStopOn nie zawiera żadnych liczb. Jeśli floorsToStopOn zawiera wartość większą od currentFloor, to winda przechodzi w stan 'up', w przeciwnym przypadku przechodzi w stan 'down'.
 
 Jeśli winda znajduje się w jednym z tych stanów, to przesuwa się o jedno piętro, a następnie sprawdza, czy ma nowe piętro w swojej tablicy floorsToStopOn. Jeśli tak, to przechodzi w stan 'transfer'. Wszystko to dzieje się w funkcji nextStep(). Pod koniec funkcji sprawdzana jest lista osób czekających na wezwanie windy, które nie mają żadnej windy, na którą czekają, i wywoływana jest dla nich funkcja callElevator().
