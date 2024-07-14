@@ -34,22 +34,71 @@ export class ElevatorSystemService {
     }
 
     callElevator(startingFloor: number, destinationFloor: number): void {
-        const currentElevators = this.elevatorsSubject.getValue();
-        let closestElevator = currentElevators.reduce((prev, curr) =>
-            Math.abs(curr.currentFloor - startingFloor) < Math.abs(prev.currentFloor - startingFloor) && curr.status === 'wait' ? curr : prev
-        );
-
-        closestElevator.floorsToStopOn.push(+startingFloor);
-
-        this.elevatorsSubject.next(currentElevators);
         const currentPeople = this.peopleSubject.getValue();
+        const currentElevators = this.elevatorsSubject.getValue();
+        const callableElevators = currentElevators.filter(elevator => {
+            if (startingFloor < destinationFloor) {
+                return (elevator.status === 'wait' && !elevator.floorsToStopOn.length) ||
+                    (elevator.status === 'up' && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor)) ||
+                    (elevator.status === 'wait' && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor));
+            } else {
+                return (elevator.status === 'wait' && !elevator.floorsToStopOn.length) ||
+                    (elevator.status === 'down' && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor)) ||
+                    (elevator.status === 'wait' && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor));
+            }
+        });
+    
+        let bestElevator: Elevator | null = null;
+        if (callableElevators && callableElevators.length) {
+            const travelTimes = callableElevators.map(elevator => this.calculateTravelTime(elevator, startingFloor, destinationFloor));
+            bestElevator = callableElevators[0];
+            let bestTime = travelTimes[0];
+    
+            for (let i = 1; i < callableElevators.length; i++) {
+                if (travelTimes[i] < bestTime) {
+                    bestElevator = callableElevators[i];
+                    bestTime = travelTimes[i];
+                }
+            }
+    
+            bestElevator.floorsToStopOn.push(+startingFloor);
+            bestElevator.floorsToStopOn = [...new Set(bestElevator.floorsToStopOn)];
+        }
+    
         currentPeople.push({
             startingFloor,
             destinationFloor,
             elevatorNumber: 0,
-            waitingForElevatorId: closestElevator.id
+            waitingForElevatorId: bestElevator ? bestElevator.id : 0
         });
+    
+        const updatedElevators = currentElevators.map(elevator =>
+            bestElevator && elevator.id === bestElevator.id ? bestElevator : elevator
+        );
+    
         this.peopleSubject.next(currentPeople);
+        this.elevatorsSubject.next(updatedElevators);
+    }
+    
+
+    private calculateTravelTime(elevator: Elevator, startingFloor: number, destinationFloor: number): number {
+        let travelTime = 0;
+        if(elevator.status === 'wait' || elevator.status === 'transfer') {
+            travelTime +=1
+        } 
+        if(startingFloor < destinationFloor) {
+            travelTime += Math.abs(startingFloor-elevator.currentFloor)
+            travelTime += destinationFloor - startingFloor
+            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor < destinationFloor).length
+            travelTime += stopsDuringTravel * 2
+        } else {
+            travelTime += Math.abs(startingFloor-elevator.currentFloor)
+            travelTime += startingFloor - destinationFloor
+            const stopsDuringTravel = elevator.floorsToStopOn.filter(floor => floor > destinationFloor).length
+            travelTime += stopsDuringTravel * 2
+        }
+
+        return travelTime;
     }
 
     getWaitingPeople(floor: number): Observable<Person[]> {
@@ -58,7 +107,7 @@ export class ElevatorSystemService {
         );
     }
 
-    getCarriedPeople(floor: number, elevatorId: number): Observable<Person[]> {
+    getCarriedPeople(elevatorId: number): Observable<Person[]> {
         return this.people$.pipe(
             map(people => people.filter(person => person.elevatorNumber === elevatorId))
         );
@@ -82,10 +131,10 @@ export class ElevatorSystemService {
                     currentPeople.forEach(person => {
                         if(elevator.id === person.waitingForElevatorId && person.startingFloor === elevator.currentFloor) {
                             person.elevatorNumber = elevator.id;
-                            elevator.floorsToStopOn.push(+person.destinationFloor);   
+                            elevator.floorsToStopOn.push(+person.destinationFloor);
+                            elevator.floorsToStopOn = [...new Set(elevator.floorsToStopOn)] 
                         }
                     });
-                    console.log(currentPeople);
                     elevator.floorsToStopOn = elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor);                     
                 }
                 if (elevator.floorsToStopOn.some(floor => floor === elevator.currentFloor)) {
@@ -115,7 +164,12 @@ export class ElevatorSystemService {
                 }
             }
         });
+
+        const peopleToRecall = currentPeople.filter(person => !person.waitingForElevatorId)
+        currentPeople = currentPeople.filter(person => person.waitingForElevatorId);
+
         this.peopleSubject.next(currentPeople);
         this.elevatorsSubject.next(currentElevators);
-    }
+        peopleToRecall.forEach(person => this.callElevator(person.startingFloor, person.destinationFloor));
+}
 }

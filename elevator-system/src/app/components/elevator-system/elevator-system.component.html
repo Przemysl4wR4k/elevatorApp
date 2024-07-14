@@ -11,7 +11,7 @@
                 {{elevator.currentFloor}} {{elevator.status === 'up' ? '&uarr;' : null}} {{elevator.status === 'down' ? '&darr;' : null}}
             </div>
             <app-elevator *ngIf="elevator.currentFloor === floor"
-                [people]="elevatorSystemService.getCarriedPeople(floor, elevator.id) | async"/>
+                [people]="elevatorSystemService.getCarriedPeople(elevator.id) | async"/>
         </td>
     </tr>
 </table>
