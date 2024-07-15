@@ -1,9 +1,9 @@
 <div class="button-container d-flex">
-    <div class="button-wrapper d-flex p-3">
-        <input id="no-of-floors" class="me-2" [formControl]="noOfFloors" placeholder="Number of floors">
-        <button class="button next me-4" [disabled]="!noOfFloors.valid" (click)="setNoOfFloors()">Set number of floors</button>
-        <input id="no-of-elevators" class="me-2" [formControl]="noOfElevators" placeholder="Number of elevators">
-        <button class="button next me-4" [disabled]="!noOfElevators.valid" (click)="setNoOfElevators()">Set number of elevators</button>
+    <div class="button-wrapper d-flex p-2">
+        <input id="no-of-floors" class="me-1" [formControl]="noOfFloors" placeholder="Number of floors">
+        <button class="button next me-3" [disabled]="!noOfFloors.valid" (click)="setNoOfFloors()">Set number of floors</button>
+        <input id="no-of-elevators" class="me-1" [formControl]="noOfElevators" placeholder="Number of elevators">
+        <button class="button next me-3" [disabled]="!noOfElevators.valid" (click)="setNoOfElevators()">Set number of elevators</button>
         <button class="button next" (click)="elevatorSystemService.nextStep()">Next Step</button>
     </div>
 </div>

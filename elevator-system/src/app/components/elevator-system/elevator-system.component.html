@@ -5,12 +5,9 @@
         </td>
         <td class="elevator" *ngFor="let elevator of elevatorSystemService.elevators$ | async"
             [ngClass]="
-                (elevator.currentFloor === floor && elevator.status === 'transfer') ? 'open-elevator': 'closed-elevator'
+                (elevator.currentFloor === floor && elevator.status === status.transfer) ? 'open-elevator': 'closed-elevator'
             "> 
-            <div class="display-floor">
-                {{elevator.currentFloor}} {{elevator.status === 'up' ? '&uarr;' : null}} {{elevator.status === 'down' ? '&darr;' : null}}
-            </div>
-            <app-elevator *ngIf="elevator.currentFloor === floor"
+            <app-elevator *ngIf="elevator.currentFloor === floor" [elevator]="elevator"
                 [people]="elevatorSystemService.getCarriedPeople(elevator.id) | async"/>
         </td>
     </tr>

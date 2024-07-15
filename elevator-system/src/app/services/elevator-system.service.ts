@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { Elevator, Person } from '../models/elevator-system.model';
+import { Elevator, Person, Status } from '../models/elevator-system.model';
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +12,7 @@ export class ElevatorSystemService {
         id: k + 1,
         currentFloor: 0,
         floorsToStopOn: [],
-        status: 'wait' as 'wait'
+        status: Status.wait
     })));
     elevators$ = this.elevatorsSubject.asObservable();
 
@@ -28,7 +28,7 @@ export class ElevatorSystemService {
             id: k + 1,
             currentFloor: 0,
             floorsToStopOn: [],
-            status: 'wait' as 'wait'
+            status: Status.wait
         }));
         this.elevatorsSubject.next(newElevators);
     }
@@ -38,13 +38,13 @@ export class ElevatorSystemService {
         const currentElevators = this.elevatorsSubject.getValue();
         const callableElevators = currentElevators.filter(elevator => {
             if (startingFloor < destinationFloor) {
-                return (elevator.status === 'wait' && !elevator.floorsToStopOn.length) ||
-                    (elevator.status === 'up' && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor)) ||
-                    (elevator.status === 'wait' && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor));
+                return (elevator.status === Status.wait && !elevator.floorsToStopOn.length) ||
+                    (elevator.status === Status.up && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor)) ||
+                    (elevator.status === Status.wait && elevator.currentFloor <= startingFloor && elevator.floorsToStopOn.some(floor => floor >= startingFloor));
             } else {
-                return (elevator.status === 'wait' && !elevator.floorsToStopOn.length) ||
-                    (elevator.status === 'down' && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor)) ||
-                    (elevator.status === 'wait' && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor));
+                return (elevator.status === Status.wait && !elevator.floorsToStopOn.length) ||
+                    (elevator.status === Status.down && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor)) ||
+                    (elevator.status === Status.wait && elevator.currentFloor >= startingFloor && elevator.floorsToStopOn.some(floor => floor <= startingFloor));
             }
         });
     
@@ -84,7 +84,7 @@ export class ElevatorSystemService {
     private calculateTravelTime(elevator: Elevator, startingFloor: number, destinationFloor: number): number {
         let travelTime = 0;
         const {status, floorsToStopOn} = elevator
-        if(status === 'wait' || status === 'transfer') travelTime +=1
+        if(status === Status.wait || status === Status.transfer) travelTime +=1
         travelTime += Math.abs(startingFloor-elevator.currentFloor) + Math.abs(startingFloor - destinationFloor)
         const stopsDuringTravel = floorsToStopOn.filter(floor => startingFloor < destinationFloor ? floor <= destinationFloor : floor >= destinationFloor).length
         travelTime += stopsDuringTravel * 2
@@ -110,11 +110,11 @@ export class ElevatorSystemService {
     
         currentElevators.forEach(elevator => {
             if (elevator.floorsToStopOn.length === 0) {
-                elevator.status = 'wait';
+                elevator.status = Status.wait;
             } else {
-                if (elevator.status === 'wait' || elevator.status === 'transfer') {
+                if (elevator.status === Status.wait || elevator.status === Status.transfer) {
                     if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
-                        elevator.status = 'transfer';
+                        elevator.status = Status.transfer;
     
                         currentPeople = currentPeople.filter(person =>
                             !(person.elevatorNumber === elevator.id && person.destinationFloor === elevator.currentFloor)
@@ -128,17 +128,17 @@ export class ElevatorSystemService {
     
                         elevator.floorsToStopOn = [...new Set(elevator.floorsToStopOn.filter(floor => floor !== elevator.currentFloor))];
                     } else {
-                        elevator.status = elevator.floorsToStopOn[0] > elevator.currentFloor ? 'up' : 'down';
+                        elevator.status = elevator.floorsToStopOn[0] > elevator.currentFloor ? Status.up: Status.down;
                     }
-                } else if (elevator.status === 'up') {
+                } else if (elevator.status === Status.up) {
                     elevator.currentFloor++;
                     if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
-                        elevator.status = 'transfer';
+                        elevator.status = Status.transfer;
                     }
-                } else if (elevator.status === 'down') {
+                } else if (elevator.status === Status.down) {
                     elevator.currentFloor--;
                     if (elevator.floorsToStopOn.includes(elevator.currentFloor)) {
-                        elevator.status = 'transfer';
+                        elevator.status = Status.transfer;
                     }
                 }
             }

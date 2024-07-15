@@ -26,15 +26,13 @@ export class SystemControlButtonsComponent {
   }
 
   setNoOfFloors() {
-    if (this.noOfFloors.valid) {
-      //@ts-ignore
+    if (this.noOfFloors.valid && this.noOfFloors.value) {
       this.elevatorSystemService.setNoOfFloors(this.noOfFloors.value);
       this.noOfFloors.reset();
     }
   }
   setNoOfElevators() {
-    if (this.noOfElevators.valid) {
-      //@ts-ignore
+    if (this.noOfElevators.valid && this.noOfElevators.value) {
       this.elevatorSystemService.setNoOfElevators(this.noOfElevators.value);
       this.noOfElevators.reset();
     }

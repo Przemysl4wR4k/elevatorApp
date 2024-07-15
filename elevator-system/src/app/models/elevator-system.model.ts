@@ -9,5 +9,11 @@ export interface Elevator {
     id: number;
     currentFloor: number;
     floorsToStopOn: number[];
-    status: 'up' | 'down' | 'transfer' | 'wait';
+    status: Status
+}
+export enum Status {
+    up,
+    down,
+    transfer,
+    wait
 }

@@ -4,6 +4,7 @@ import { FloorComponent } from '../floor/floor.component';
 import { ElevatorSystemService } from '../../services/elevator-system.service';
 import { ElevatorComponent } from '../elevator/elevator.component';
 import { SystemControlButtonsComponent } from '../system-control-buttons/system-control-buttons.component';
+import { Status } from '../../models/elevator-system.model';
 
 @Component({
   selector: 'app-elevator-system',
@@ -14,6 +15,7 @@ import { SystemControlButtonsComponent } from '../system-control-buttons/system-
 })
 export class ElevatorSystemComponent {
 
+  status = Status
   constructor(protected elevatorSystemService: ElevatorSystemService) {
   }
 }

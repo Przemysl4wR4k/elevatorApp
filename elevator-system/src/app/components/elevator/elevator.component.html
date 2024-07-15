@@ -1,3 +1,6 @@
+<div *ngIf="elevator" class="display-floor">
+    {{elevator.currentFloor}} {{elevator.status === status.up ? '&uarr;' : null}} {{elevator.status === status.down ? '&darr;' : null}}
+</div>
 <div class="people">
     <div class="person" *ngFor="let person of people">{{ person.startingFloor }} &rarr; {{ person.destinationFloor }}</div>
 </div>

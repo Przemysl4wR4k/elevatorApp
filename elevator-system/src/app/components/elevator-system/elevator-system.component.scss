@@ -2,10 +2,11 @@ table {
     white-space: nowrap;
 }
 .elevator {
-    height: 433px;
-    width: 326px;
+    height: 216px;
+    width: 163px;
     background-repeat: no-repeat;
     display: inline-block;
+    background-size: cover;
 
 }
 .closed-elevator {
@@ -14,16 +15,4 @@ table {
 .open-elevator {
     background-image: url(../../../assets/images/open-elevator.jpg);
 }
-
-.display-floor {
-    border-radius: 0.7rem;
-    text-align: center;
-    width: 80PX;
-    height: 35px;
-    font-size: x-large;
-    font-weight: 700;
-    color: white;
-    background-color: black;
-    margin: 40px auto 20px auto;
-} 
 

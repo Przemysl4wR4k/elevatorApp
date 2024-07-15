@@ -24,8 +24,7 @@ export class FloorComponent {
   constructor(protected elevatorSystemService: ElevatorSystemService) {}
 
   callElevator() {
-    if (this.destinationFloorControl.valid) {
-      //@ts-ignore
+    if (this.destinationFloorControl.valid && this.destinationFloorControl.value) {
       this.elevatorSystemService.callElevator(this.id, +this.destinationFloorControl.value);
       this.destinationFloorControl.reset();
     }

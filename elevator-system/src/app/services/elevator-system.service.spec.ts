@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ElevatorSystemService } from './elevator-system.service';
+import { Status } from '../models/elevator-system.model';
 
 describe('ElevatorSystemService', () => {
   let service: ElevatorSystemService;
@@ -114,7 +115,7 @@ describe('ElevatorSystemService', () => {
       service.elevators$.subscribe(elevators => {
         const elevator = elevators[0];
         expect(elevator.currentFloor).toBe(3);
-        expect(elevator.status).toBe('transfer');
+        expect(elevator.status).toBe(Status.transfer);
       });
     });
 
