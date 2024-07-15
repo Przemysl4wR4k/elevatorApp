@@ -56,9 +56,17 @@ Jeśli nie ma wind spełniających podane kryteria, to człowiek nie zostaje prz
 
 Dla każdej z dostępnych wind obliczamy jej travelTime. Jeśli winda znajduje się już w stanie 'wait' lub 'transfer', to dodajemy +1. Dodajemy +1 za każde piętro pomiędzy obecnym piętrem windy a piętrem początkowym i tak samo za każde piętro pomiędzy destinationFloor i startingFloor. Za każde piętro, na którym winda zatrzyma się w trakcie kursu, dodajemy +2 (zmiana stanów na 'transfer' i ponownie na kierunek jazdy).
 
+Zaimplementowany system wind jest bardziej zaawansowany niż FCFS. Uwzględnia on bieżący status wind oraz ich pozycje w celu optymalizacji obsługi wezwań. System wybiera windę, która może najefektywniej obsłużyć wezwanie, biorąc pod uwagę czas podróży i kierunek jazdy.
+
+Zalety:
+
+Lepsza optymalizacja tras i redukcja czasu oczekiwania.
+Większa efektywność energetyczna, ponieważ windy poruszają się zgodnie z istniejącymi trasami.
+Skalowalność przy większej liczbie wind i wezwań.
+Użytkownicy podają docelowe piętro od razu, co pozwala na lepsze planowanie tras.
 
 Możnaby dodać dodatkowe walidatory, ciekawszy UI z RWD i zastanowić się nad dalszą poprawą algorytmu. Jeśli uznalibyście coś takiego za potrzebne, to dajcie znać.
 
-
+Jeśli aplikacja jest oglądana na małym ekranie to polecam zmniejszyć powiększenie ekranu (ctrl -)
 
 
